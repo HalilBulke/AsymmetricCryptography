@@ -21,7 +21,6 @@ public class LicenseManager {
         }
         catch (Exception e){}
         c = new Client(pubKey);
-        System.out.println(c.rawText);
         System.out.println("License Manager Service started...");
         this.verifyLicense();
     }
@@ -39,9 +38,6 @@ public class LicenseManager {
     }
     public void verifyLicense(){
         try {
-            //license.txt yoksa süreci başlat. direkt servera request at signature işini yap.
-            //license.txt varsa süreci başlat. digital signatureü public key ile decrypt et kıyas doğruysa succeed de.
-            //kıyas yanlışsa fail de servera request at signature işini yap.
             c.beginProcess();
             byte[] digitalSignature = Files.readAllBytes(Paths.get("license.txt"));
             c.printMessages(false);
@@ -85,6 +81,7 @@ public class LicenseManager {
                 byte[] signedBytes = sr.sign();
                 System.out.println(Base64.getEncoder().encodeToString(signedBytes));
                 Files.write(Paths.get("license.txt"), signedBytes);
+                System.out.println("Client -- License is not found");
                 System.out.println("Client -- Succeed. The license file content is secured and signed by the server.");
             }
             catch (Exception e){

@@ -8,17 +8,19 @@ import java.net.NetworkInterface;
 import java.nio.file.FileStore;
 import java.nio.file.FileSystems;
 import java.security.MessageDigest;
-import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.Signature;
 import java.text.MessageFormat;
 import java.util.Base64;
 
 public class Client {
+    public static void main(String[] args) {
+        LicenseManager manager = new LicenseManager();
+    }
     public String rawText;
     public byte[] encryptedBytes;
     public byte[] hashValue;
     public PublicKey pubKey;
+
     public Client(PublicKey pubKey){
         try {
             this.pubKey = pubKey;
@@ -37,9 +39,7 @@ public class Client {
             FileStore store = FileSystems.getDefault().getFileStores().iterator().next();
             String diskID = store.getAttribute("volume:vsn").toString();
             System.out.println("My Disk ID: " + diskID);
-//            for (FileStore store: FileSystems.getDefault().getFileStores()) {
-//                System.out.format("%-20s %s\n", store, store.getAttribute("volume:vsn"));
-//            }
+
             String command = "wmic baseboard get serialnumber";
             String MBSerialNumber=new String();
             File file = File.createTempFile("realhowto", ".vbs");
